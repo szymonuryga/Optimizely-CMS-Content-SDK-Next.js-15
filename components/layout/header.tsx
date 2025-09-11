@@ -8,12 +8,12 @@ export async function Header({ locale }: { locale: string }) {
 
   console.log('Fetching header content for locale:', locale)
   try {
-    const c = await client.fetchContent(`/${locale}/header/`)
+    const c = await client.getContentByPath(`/${locale}/header/`)
 
     const OptimizelyComponentWithLocale =
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       OptimizelyComponent as React.ComponentType<{ opti: any; locale: string }>
-    return <OptimizelyComponentWithLocale opti={c} locale={locale} />
+    return <OptimizelyComponentWithLocale opti={c[0]} locale={locale} />
   } catch (error) {
     console.error('Error fetching content:', error)
     return null

@@ -7,9 +7,9 @@ export async function Footer({ locale }: { locale: string }) {
   })
 
   try {
-    const c = await client.fetchContent(`/${locale}/footer/`)
+    const c = await client.getContentByPath(`/${locale}/footer/`)
 
-    return <OptimizelyComponent opti={c} />
+    return <OptimizelyComponent opti={c[0]} />
   } catch (error) {
     console.error('Error fetching content:', error)
     return null

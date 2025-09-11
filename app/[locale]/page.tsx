@@ -18,7 +18,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     graphUrl: process.env.OPTIMIZELY_GRAPH_URL,
   })
 
-  const c = await client.fetchContent(`/${locale}/`)
+  const contentResult = await client.getContentByPath(`/${locale}/`)
+  const c = contentResult[0]
 
   return {
     title: c?.title ?? '',
@@ -36,9 +37,9 @@ export default async function Page({ params }: Props) {
   })
 
   try {
-    const c = await client.fetchContent(`/${locale}/`)
+    const c = await client.getContentByPath(`/${locale}/`)
 
-    return <OptimizelyComponent opti={c} />
+    return <OptimizelyComponent opti={c[0]} />;
   } catch (error) {
     console.error('Error fetching content:', error)
     return notFound()

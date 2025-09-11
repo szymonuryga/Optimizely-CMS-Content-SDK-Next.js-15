@@ -31,7 +31,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
   const formattedSlug = `/${slug.join('/')}/`
 
-  const c = await client.fetchContent(`/${locale}${formattedSlug}`)
+  const contentResult = await client.getContentByPath(`/${locale}${formattedSlug}`)
+  const c = contentResult[0]
 
   return {
     title: c?.title ?? '',
@@ -49,9 +50,9 @@ export default async function Page({ params }: Props) {
   })
 
   try {
-    const c = await client.fetchContent(`/${locale}/${slug.join('/')}/`)
+    const c = await client.getContentByPath(`/${locale}/${slug.join('/')}/`)
 
-    return <OptimizelyComponent opti={c} />
+  return <OptimizelyComponent opti={c[0]} />;
   } catch (error) {
     console.error('Error fetching content:', error)
     return notFound()
