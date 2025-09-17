@@ -10,7 +10,9 @@ export const getAllPagesPaths = async () => {
     const pageTypes = ['CMSPage', 'SEOExperience']
     const pathsResp = await client.request(ALL_PAGES_QUERY, {
       pageType: pageTypes,
-    })
+    // Todo: Workaround for types for now
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
 
     const paths = (pathsResp._Content?.items as ContentItem[]) ?? []
 
