@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "opti-push": "pnpm exec optimizely-cms-cli config push optimizely.config.mjs"
+    "opti-push": "pnpm exec optimizely-cms-cli config push optimizely.config.mjs",
+    "opti-push-data-loss": "pnpm exec optimizely-cms-cli config push optimizely.config.mjs --force"
   },
   "dependencies": {
     "@episerver/cms-sdk": "^0.1.0-alpha.8",
