@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Icons } from '../../../components/ui/icons'
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 
 export const SocialLinkContentType = contentType({
   key: 'SocialLink',
@@ -39,11 +39,11 @@ export const SocialLinkContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof SocialLinkContentType>
+  content: ContentProps<typeof SocialLinkContentType>
 }
 
-export function SocialLink({ opti }: Props) {
-  const { href, platform } = opti
+export function SocialLink({ content }: Props) {
+  const { href, platform } = content
   const formatPlatform = (platform ?? '') as keyof typeof Icons
 
   const Icon = platform ? Icons?.[formatPlatform] : null

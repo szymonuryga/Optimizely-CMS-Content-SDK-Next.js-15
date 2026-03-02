@@ -1,4 +1,4 @@
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 import Link from 'next/link'
 
 export const NavItemContentType = contentType({
@@ -19,11 +19,11 @@ export const NavItemContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof NavItemContentType>
+  content: ContentProps<typeof NavItemContentType>
 }
 
-export default function NavItem({ opti }: Props) {
-  const { href, label } = opti
+export default function NavItem({ content }: Props) {
+  const { href, label } = content
   return (
     <Link href={href ?? '/'} className="text-sm">
       {label}

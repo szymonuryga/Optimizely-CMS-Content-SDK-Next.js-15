@@ -1,5 +1,5 @@
-import { OptimizelyComponent } from '@episerver/cms-sdk/react/server'
-import { GraphClient } from '@episerver/cms-sdk'
+import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
+import { GraphClient } from '@optimizely/cms-sdk'
 
 export async function Header({ locale }: { locale: string }) {
   const client = new GraphClient(process.env.OPTIMIZELY_GRAPH_SINGLE_KEY!, {
@@ -12,8 +12,8 @@ export async function Header({ locale }: { locale: string }) {
 
     const OptimizelyComponentWithLocale =
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      OptimizelyComponent as React.ComponentType<{ opti: any; locale: string }>
-    return <OptimizelyComponentWithLocale opti={c[0]} locale={locale} />
+      OptimizelyComponent as React.ComponentType<{ content: any; locale: string }>
+    return <OptimizelyComponentWithLocale content={c[0]} locale={locale} />
   } catch (error) {
     console.error('Error fetching content:', error)
     return null

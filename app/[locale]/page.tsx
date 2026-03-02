@@ -1,6 +1,6 @@
 import { generateAlternates } from '@/lib/metadata'
-import { GraphClient } from '@episerver/cms-sdk'
-import { OptimizelyComponent } from '@episerver/cms-sdk/react/server'
+import { GraphClient } from '@optimizely/cms-sdk'
+import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import React from 'react'
@@ -39,7 +39,7 @@ export default async function Page({ params }: Props) {
   try {
     const c = await client.getContentByPath(`/${locale}/`)
 
-    return <OptimizelyComponent opti={c[0]} />;
+    return <OptimizelyComponent content={c[0]} />;
   } catch (error) {
     console.error('Error fetching content:', error)
     return notFound()

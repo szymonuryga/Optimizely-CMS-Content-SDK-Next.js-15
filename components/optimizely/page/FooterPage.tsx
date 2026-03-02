@@ -1,5 +1,5 @@
-import { contentType, Infer } from '@episerver/cms-sdk'
-import { OptimizelyComponent } from '@episerver/cms-sdk/react/server'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
+import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
 import { FooterColumnContentType } from '../block/footer-column'
 import { SocialLinkContentType } from '../block/social-link'
 
@@ -37,23 +37,23 @@ export const FooterContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof FooterContentType>
+  content: ContentProps<typeof FooterContentType>
 }
 
 export default function Footer({
-  opti: { copyrightText, columns, socialLinks },
+  content: { copyrightText, columns, socialLinks },
 }: Props) {
   return (
     <footer className="border-t">
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           {columns?.map((item, index) => (
-            <OptimizelyComponent key={index} opti={item} />
+            <OptimizelyComponent key={index} content={item} />
           ))}
         </div>
         <div className="mt-8 flex justify-center gap-4">
           {socialLinks?.map((item, index) => (
-            <OptimizelyComponent key={index} opti={item} />
+            <OptimizelyComponent key={index} content={item} />
           ))}
         </div>
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">

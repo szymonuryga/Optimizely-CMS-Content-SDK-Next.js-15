@@ -1,6 +1,6 @@
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 import Image from 'next/image'
-import { OptimizelyComponent } from '@episerver/cms-sdk/react/server'
+import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
 import { NavItemContentType } from '../block/nav-item'
 import Link from 'next/link'
 import { LanguageSwitcher } from '../../../components/layout/language-switcher'
@@ -41,12 +41,12 @@ export const HeaderContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof HeaderContentType>
+  content: ContentProps<typeof HeaderContentType>
   locale: string
 }
 
 export default function Header({
-  opti: { logo, navItems, ctaHref, ctaText },
+  content: { logo, navItems, ctaHref, ctaText },
   locale,
 }: Props) {
   return (
@@ -58,7 +58,7 @@ export default function Header({
           </Link>
           <nav className="hidden items-center gap-6 md:flex">
             {navItems?.map((navItem, index) => (
-              <OptimizelyComponent key={index} opti={navItem} />
+              <OptimizelyComponent key={index} content={navItem} />
             ))}
           </nav>
           <div className="flex items-center gap-4">

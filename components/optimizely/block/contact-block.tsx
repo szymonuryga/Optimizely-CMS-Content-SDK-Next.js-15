@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../../../components/ui/card'
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 
 export const ContactBlockContentType = contentType({
   key: 'ContactBlock',
@@ -29,17 +29,17 @@ export const ContactBlockContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof ContactBlockContentType>
+  content: ContentProps<typeof ContactBlockContentType>
 }
 
-export default function ContactBlock({ opti }: Props) {
+export default function ContactBlock({ content }: Props) {
   return (
     <section className="container mx-auto px-4 py-16">
       <Card className="mx-auto max-w-xl">
         <CardHeader>
-          <CardTitle data-epi-edit="title">{opti?.title}</CardTitle>
+          <CardTitle data-epi-edit="title">{content?.title}</CardTitle>
           <p data-epi-edit="description" className="text-muted-foreground">
-            {opti?.description}
+            {content?.description}
           </p>
         </CardHeader>
         <CardContent>

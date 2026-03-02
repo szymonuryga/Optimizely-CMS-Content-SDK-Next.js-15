@@ -1,6 +1,6 @@
-import { GraphClient, type PreviewParams } from '@episerver/cms-sdk'
-import { OptimizelyComponent } from '@episerver/cms-sdk/react/server'
-import { PreviewComponent } from '@episerver/cms-sdk/react/client'
+import { GraphClient, type PreviewParams } from '@optimizely/cms-sdk'
+import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
+import { PreviewComponent } from '@optimizely/cms-sdk/react/client'
 import Script from 'next/script'
 
 type Props = {
@@ -29,7 +29,7 @@ export default async function Page({ searchParams }: Props) {
         src={`${process.env.OPTIMIZELY_CMS_HOST}/util/javascript/communicationinjector.js`}
       ></Script>
       <PreviewComponent />
-      <OptimizelyComponent opti={response} />
+      <OptimizelyComponent content={response} />
     </>
   )
 }

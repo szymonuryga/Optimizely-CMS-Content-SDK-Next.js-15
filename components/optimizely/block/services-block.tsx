@@ -1,7 +1,7 @@
 import type React from 'react' // Import React
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 import { ServiceItemContentType } from './service-item'
-import { OptimizelyComponent } from '@episerver/cms-sdk/react/server'
+import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
 
 export const ServicesBlockContentType = contentType({
   key: 'ServicesBlock',
@@ -22,16 +22,16 @@ export const ServicesBlockContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof ServicesBlockContentType>
+  content: ContentProps<typeof ServicesBlockContentType>
 }
 
-export default function ServicesBlock({ opti }: Props) {
-  const { services } = opti
+export default function ServicesBlock({ content }: Props) {
+  const { services } = content
   return (
     <section className="container mx-auto px-4 py-16">
       <div className="grid gap-8 md:grid-cols-3">
         {services?.map((item, index) => (
-          <OptimizelyComponent key={index} opti={item} />
+          <OptimizelyComponent key={index} content={item} />
         ))}
       </div>
     </section>

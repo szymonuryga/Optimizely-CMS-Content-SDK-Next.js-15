@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Card, CardContent } from '../../../components/ui/card'
 import Link from 'next/link'
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 
 export const PortfolioItemBlockContentType = contentType({
   key: 'PortfolioItemBlock',
@@ -33,11 +33,11 @@ export const PortfolioItemBlockContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof PortfolioItemBlockContentType>
+  content: ContentProps<typeof PortfolioItemBlockContentType>
 }
 
 export default function PortfolioItemBlock({
-  opti: { title, imageUrl, link, description },
+  content: { title, imageUrl, link, description },
 }: Props) {
   return (
     <Card>

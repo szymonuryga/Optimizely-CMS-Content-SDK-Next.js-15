@@ -1,6 +1,6 @@
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 import { PortfolioItemBlockContentType } from './portfolio-item-block'
-import { OptimizelyComponent } from '@episerver/cms-sdk/react/server'
+import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
 
 export const PortfolioGridBlockContentType = contentType({
   key: 'PortfolioGridBlock',
@@ -26,10 +26,10 @@ export const PortfolioGridBlockContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof PortfolioGridBlockContentType>
+  content: ContentProps<typeof PortfolioGridBlockContentType>
 }
 
-export default function PortfolioGridBlock({ opti: { title, items } }: Props) {
+export default function PortfolioGridBlock({ content: { title, items } }: Props) {
   return (
     <section className="container mx-auto px-4 py-16">
       <h2 className="mb-12 text-3xl font-bold" data-epi-edit="title">
@@ -37,7 +37,7 @@ export default function PortfolioGridBlock({ opti: { title, items } }: Props) {
       </h2>
       <div className="grid gap-6 md:grid-cols-3">
         {items?.map((item, index) => (
-          <OptimizelyComponent key={index} opti={item} />
+          <OptimizelyComponent key={index} content={item} />
         ))}
       </div>
     </section>

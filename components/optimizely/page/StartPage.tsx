@@ -1,6 +1,6 @@
 import { AllBlocksContentTypes } from '../../../lib/optimizely/content-types'
-import { contentType, Infer } from '@episerver/cms-sdk'
-import { OptimizelyComponent } from '@episerver/cms-sdk/react/server'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
+import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
 
 export const StartPageContentType = contentType({
   key: 'StartPage',
@@ -39,14 +39,14 @@ export const StartPageContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof StartPageContentType>
+  content: ContentProps<typeof StartPageContentType>
 }
 
-export default function StartPage({ opti }: Props) {
+export default function StartPage({ content }: Props) {
   return (
     <main>
-      {opti.blocks?.map((section, i) => (
-        <OptimizelyComponent key={i} opti={section} />
+      {content.blocks?.map((section, i) => (
+        <OptimizelyComponent key={i} content={section} />
       ))}
     </main>
   )

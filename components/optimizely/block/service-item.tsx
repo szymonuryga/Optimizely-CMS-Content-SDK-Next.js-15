@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card'
 import type React from 'react' // Import React
 import Image from 'next/image'
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 
 export const ServiceItemContentType = contentType({
   key: 'ServiceItem',
@@ -29,11 +29,11 @@ export const ServiceItemContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof ServiceItemContentType>
+  content: ContentProps<typeof ServiceItemContentType>
 }
 
 export default function ServiceItem({
-  opti: { icon, title, description },
+  content: { icon, title, description },
 }: Props) {
   return (
     <Card>

@@ -1,4 +1,4 @@
-import { GraphClient } from '@episerver/cms-sdk'
+import { GraphClient } from '@optimizely/cms-sdk'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
 

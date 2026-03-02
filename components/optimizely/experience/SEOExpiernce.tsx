@@ -1,9 +1,9 @@
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 import {
   ComponentContainerProps,
-  OptimizelyExperience,
+  OptimizelyComposition,
   getPreviewUtils,
-} from '@episerver/cms-sdk/react/server'
+} from '@optimizely/cms-sdk/react/server'
 
 export const SEOExperienceContentType = contentType({
   key: 'SEOExperience',
@@ -32,7 +32,7 @@ export const SEOExperienceContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof SEOExperienceContentType>
+  content: ContentProps<typeof SEOExperienceContentType>
 }
 
 function ComponentWrapper({ children, node }: ComponentContainerProps) {
@@ -40,11 +40,11 @@ function ComponentWrapper({ children, node }: ComponentContainerProps) {
   return <div {...pa(node)}>{children}</div>
 }
 
-export default function SEOExperience({ opti }: Props) {
+export default function SEOExperience({ content }: Props) {
   return (
     <main>
-      <OptimizelyExperience
-        nodes={opti.composition.nodes ?? []}
+      <OptimizelyComposition
+        nodes={content.composition.nodes ?? []}
         ComponentWrapper={ComponentWrapper}
       />
     </main>

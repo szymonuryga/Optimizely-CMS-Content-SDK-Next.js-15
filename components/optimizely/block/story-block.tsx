@@ -1,5 +1,5 @@
 import { Card, CardContent } from '../../../components/ui/card'
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 
 export const StoryBlockContentType = contentType({
   key: 'StoryBlock',
@@ -24,7 +24,7 @@ export const StoryBlockContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof StoryBlockContentType>
+  content: ContentProps<typeof StoryBlockContentType>
 }
 
 interface HighlightProps {
@@ -39,8 +39,8 @@ function Highlight({ text }: HighlightProps) {
   )
 }
 
-export default function StoryBlock({ opti }: Props) {
-  const { story, highlights } = opti
+export default function StoryBlock({ content }: Props) {
+  const { story, highlights } = content
   return (
     <section className="container mx-auto px-4 py-16">
       <Card className="border-none">

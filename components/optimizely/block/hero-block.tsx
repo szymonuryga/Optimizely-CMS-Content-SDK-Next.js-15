@@ -1,5 +1,5 @@
 import { cn } from '../../../lib/utils'
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 
 export const HeroBlockContentType = contentType({
   key: 'HeroBlock',
@@ -42,11 +42,11 @@ export const HeroBlockContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof HeroBlockContentType>
+  content: ContentProps<typeof HeroBlockContentType>
 }
 
 export default function HeroBlock({
-  opti: {
+  content: {
     title,
     subtitle,
     showDecoration = true,

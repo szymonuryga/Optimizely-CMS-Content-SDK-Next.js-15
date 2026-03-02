@@ -1,9 +1,9 @@
-import { BlankSectionContentType, Infer } from '@episerver/cms-sdk'
+import { BlankSectionContentType, ContentProps } from '@optimizely/cms-sdk'
 import {
   OptimizelyGridSection,
   StructureContainerProps,
   getPreviewUtils,
-} from '@episerver/cms-sdk/react/server'
+} from '@optimizely/cms-sdk/react/server'
 
 function Row({ children, node }: StructureContainerProps) {
   const { pa } = getPreviewUtils(node)
@@ -30,18 +30,18 @@ function Column({ children, node }: StructureContainerProps) {
 }
 
 type BlankSectionProps = {
-  opti: Infer<typeof BlankSectionContentType>
+  content: ContentProps<typeof BlankSectionContentType>
 }
 
 /** Defines a component to render a blank section */
-export default function BlankSection({ opti }: BlankSectionProps) {
-  const { pa } = getPreviewUtils(opti)
+export default function BlankSection({ content }: BlankSectionProps) {
+  const { pa } = getPreviewUtils(content)
   return (
     <section
       className="vb:grid relative flex w-full flex-col flex-wrap"
-      {...pa(opti)}
+      {...pa(content)}
     >
-      <OptimizelyGridSection nodes={opti.nodes} row={Row} column={Column} />
+      <OptimizelyGridSection nodes={content.nodes} row={Row} column={Column} />
     </section>
   )
 }

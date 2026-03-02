@@ -1,5 +1,5 @@
 import { Card, CardContent } from '../../../components/ui/card'
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 
 export const AvailabilityBlockContentType = contentType({
   key: 'AvailabilityBlock',
@@ -24,10 +24,10 @@ export const AvailabilityBlockContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof AvailabilityBlockContentType>
+  content: ContentProps<typeof AvailabilityBlockContentType>
 }
 
-export default function AvailabilityBlock({ opti }: Props) {
+export default function AvailabilityBlock({ content }: Props) {
   return (
     <section className="container mx-auto px-4 py-16">
       <Card className="border-none">
@@ -37,7 +37,7 @@ export default function AvailabilityBlock({ opti }: Props) {
               className="leading-relaxed text-[#2d2d2d]"
               data-epi-edit="availability"
             >
-              {opti.availability}
+              {content.availability}
             </p>
             <div>
               <p className="leading-relaxed text-[#2d2d2d]">
@@ -47,7 +47,7 @@ export default function AvailabilityBlock({ opti }: Props) {
                 className="mt-2 list-inside list-disc space-y-1"
                 data-epi-edit="projectTypes"
               >
-                {opti.projectTypes?.map((type, index) => (
+                {content.projectTypes?.map((type, index) => (
                   <li key={index} className="text-[#2d2d2d]">
                     {type}
                   </li>

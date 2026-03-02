@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Card, CardContent } from '../../../components/ui/card'
 import { cva } from 'class-variance-authority'
-import { contentType, displayTemplate, Infer } from '@episerver/cms-sdk'
+import { contentType, displayTemplate, ContentProps } from '@optimizely/cms-sdk'
 
 export const ProfileBlockContentType = contentType({
   key: 'ProfileBlock',
@@ -64,7 +64,7 @@ export const ProfileBlockDisplayTemplate = displayTemplate({
 })
 
 type Props = {
-  opti: Infer<typeof ProfileBlockContentType>
+  content: ContentProps<typeof ProfileBlockContentType>
   displaySettings?: Record<string, string>
 }
 
@@ -82,7 +82,7 @@ const backgroundVariants = cva('container mx-auto px-4 py-16', {
 })
 
 export default function ProfileBlock({
-  opti: { imageSrc, name, title, bio },
+  content: { imageSrc, name, title, bio },
   displaySettings,
 }: Props) {
   const colorScheme = displaySettings?.colorScheme || 'default'

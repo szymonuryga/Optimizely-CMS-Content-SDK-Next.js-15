@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 
 export const LogoItemBlockContentType = contentType({
   key: 'LogoItemBlock',
@@ -18,10 +18,10 @@ export const LogoItemBlockContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof LogoItemBlockContentType>
+  content: ContentProps<typeof LogoItemBlockContentType>
 }
 
-export default function LogoItemBlock({ opti: { src, alt } }: Props) {
+export default function LogoItemBlock({ content: { src, alt } }: Props) {
   return (
     <div className="flex items-center">
       <Image

@@ -1,4 +1,4 @@
-import { GraphClient } from '@episerver/cms-sdk'
+import { GraphClient } from '@optimizely/cms-sdk'
 import { mapPathWithoutLocale } from './language'
 
 export const getAllPagesPaths = async () => {

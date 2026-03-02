@@ -1,6 +1,6 @@
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 import { TestimonialItemBlockContentType } from './testimonial-item-block'
-import { OptimizelyComponent } from '@episerver/cms-sdk/react/server'
+import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
 
 export const TestimonialsBlockContentType = contentType({
   key: 'TestimonialsBlock',
@@ -27,11 +27,11 @@ export const TestimonialsBlockContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof TestimonialsBlockContentType>
+  content: ContentProps<typeof TestimonialsBlockContentType>
 }
 
 export default function TestimonialsBlock({
-  opti: { title, testimonials },
+  content: { title, testimonials },
 }: Props) {
   return (
     <section className="container mx-auto px-4 py-16">
@@ -40,7 +40,7 @@ export default function TestimonialsBlock({
       </h2>
       <div className="grid gap-8 md:grid-cols-3">
         {testimonials?.map((item, index) => (
-          <OptimizelyComponent key={index} opti={item} />
+          <OptimizelyComponent key={index} content={item} />
         ))}
       </div>
     </section>

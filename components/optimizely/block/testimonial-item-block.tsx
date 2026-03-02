@@ -9,7 +9,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '../../../components/ui/avatar'
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 
 export const TestimonialItemBlockContentType = contentType({
   key: 'TestimonialItemBlock',
@@ -37,17 +37,17 @@ export const TestimonialItemBlockContentType = contentType({
       type: 'string',
       localized: true,
       displayName: 'Content',
-      sortOrder: 29,
+      sortOrder: 30,
     },
   },
 })
 
 type Props = {
-  opti: Infer<typeof TestimonialItemBlockContentType>
+  content: ContentProps<typeof TestimonialItemBlockContentType>
 }
 
 export default function TestimonialItemBlock({
-  opti: { fullName, position, avatarSrc, content },
+  content: { fullName, position, avatarSrc, content },
 }: Props) {
   return (
     <Card>

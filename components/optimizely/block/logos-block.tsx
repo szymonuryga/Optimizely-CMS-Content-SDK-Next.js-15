@@ -1,6 +1,6 @@
-import { contentType, Infer } from '@episerver/cms-sdk'
+import { contentType, ContentProps } from '@optimizely/cms-sdk'
 import { LogoItemBlockContentType } from './logo-item-block'
-import { OptimizelyComponent } from '@episerver/cms-sdk/react/server'
+import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
 
 export const LogosBlockContentType = contentType({
   key: 'LogosBlock',
@@ -19,10 +19,10 @@ export const LogosBlockContentType = contentType({
 })
 
 type Props = {
-  opti: Infer<typeof LogosBlockContentType>
+  content: ContentProps<typeof LogosBlockContentType>
 }
 
-export default function LogosBlock({ opti: { logos } }: Props) {
+export default function LogosBlock({ content: { logos } }: Props) {
   return (
     <section className="container mx-auto px-4 py-16">
       <div
@@ -30,7 +30,7 @@ export default function LogosBlock({ opti: { logos } }: Props) {
         data-epi-edit="logos"
       >
         {logos?.map((logo, index) => (
-          <OptimizelyComponent key={index} opti={logo} />
+          <OptimizelyComponent key={index} content={logo} />
         ))}
       </div>
     </section>

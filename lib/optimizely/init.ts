@@ -1,9 +1,9 @@
-import { initReactComponentRegistry } from '@episerver/cms-sdk/react/server'
+import { initReactComponentRegistry } from '@optimizely/cms-sdk/react/server'
 import {
   BlankExperienceContentType,
   initContentTypeRegistry,
   initDisplayTemplateRegistry,
-} from '@episerver/cms-sdk'
+} from '@optimizely/cms-sdk'
 import AvailabilityBlock, {
   AvailabilityBlockContentType,
 } from '@/components/optimizely/block/availability-block'
