@@ -2,6 +2,7 @@ import { GraphClient, type PreviewParams } from '@optimizely/cms-sdk'
 import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
 import { PreviewComponent } from '@optimizely/cms-sdk/react/client'
 import Script from 'next/script'
+import { Suspense } from 'react'
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -29,7 +30,9 @@ export default async function Page({ searchParams }: Props) {
         src={`${process.env.OPTIMIZELY_CMS_HOST}/util/javascript/communicationinjector.js`}
       ></Script>
       <PreviewComponent />
-      <OptimizelyComponent content={response} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <OptimizelyComponent content={response} />
+      </Suspense>
     </>
   )
 }

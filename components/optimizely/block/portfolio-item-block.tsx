@@ -56,7 +56,7 @@ export default function PortfolioItemBlock({
             </h3>
           </Link>
           <p
-            className="text-sm text-muted-foreground"
+            className="text-muted-foreground text-sm"
             data-epi-edit="description"
           >
             {description}

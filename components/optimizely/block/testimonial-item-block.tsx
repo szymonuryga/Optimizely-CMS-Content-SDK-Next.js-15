@@ -67,7 +67,7 @@ export default function TestimonialItemBlock({
               {fullName}
             </CardTitle>
             <p
-              className="text-sm text-muted-foreground"
+              className="text-muted-foreground text-sm"
               data-epi-edit="position"
             >
               {position}

@@ -55,7 +55,7 @@ export default function HeroBlock({
   },
 }: Props) {
   return (
-    <section className="container relative mx-auto px-4 pb-16 pt-20">
+    <section className="relative container mx-auto px-4 pt-20 pb-16">
       <div className={cn('flex flex-col', { 'sm:pr-60': showDecoration })}>
         <h1
           className="mb-4 w-full max-w-xl text-4xl font-bold md:text-6xl"
@@ -65,7 +65,7 @@ export default function HeroBlock({
         </h1>
         {subtitle && (
           <p
-            className="mb-8 max-w-xl text-xl text-muted-foreground"
+            className="text-muted-foreground mb-8 max-w-xl text-xl"
             data-epi-edit="subtitle"
           >
             {subtitle}
@@ -73,7 +73,7 @@ export default function HeroBlock({
         )}
       </div>
       {showDecoration && (
-        <div className="absolute right-20 top-10 hidden sm:block">
+        <div className="absolute top-10 right-20 hidden sm:block">
           <div className="relative h-48 w-48 lg:h-72 lg:w-72">
             <div
               className="absolute right-0 h-32 w-32 rounded-full lg:h-56 lg:w-56"

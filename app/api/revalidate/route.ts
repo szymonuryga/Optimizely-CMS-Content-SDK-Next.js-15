@@ -1,6 +1,7 @@
 import { GraphClient } from '@optimizely/cms-sdk'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
+import { CACHE_KEYS, getCacheTag } from '@/lib/cache/cache-keys'
 
 const OPTIMIZELY_REVALIDATE_SECRET = process.env.OPTIMIZELY_REVALIDATE_SECRET
 
@@ -23,9 +24,9 @@ export async function POST(request: NextRequest) {
     const contentData = await client.request(GET_CONTENT_BY_GUID_QUERY, {
       guid: formattedGuid,
       locale: [locale],
-    // Todo: Workaround for types for now
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
+      // Todo: Workaround for types for now
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
     const content = contentData?._Content?.item
     const urlType = content?._metadata?.url?.type
     // In hierarchical routing, the Start Page in Optimizely does not use "/" as its URL.
@@ -45,7 +46,7 @@ export async function POST(request: NextRequest) {
 
     const urlWithLocale = normalizeUrl(url, locale)
 
-    await handleRevalidation(urlWithLocale)
+    await handleRevalidation(urlWithLocale, locale)
 
     return NextResponse.json({ revalidated: true, now: Date.now() })
   } catch (error) {
@@ -98,16 +99,18 @@ function normalizeUrl(url: string, locale: string): string {
     : `/${locale}${normalizedUrl}`
 }
 
-async function handleRevalidation(urlWithLocale: string) {
+async function handleRevalidation(urlWithLocale: string, locale: string) {
   if (urlWithLocale.includes('footer')) {
-    console.log(`Revalidating tag: optimizely-footer`)
-    await revalidateTag('optimizely-footer')
+    const footerTag = getCacheTag(CACHE_KEYS.FOOTER, locale)
+    console.log(`Revalidating tag: ${footerTag}`)
+    revalidateTag(footerTag, 'max')
   } else if (urlWithLocale.includes('header')) {
-    console.log(`Revalidating tag: optimizely-header`)
-    await revalidateTag('optimizely-header')
+    const headerTag = getCacheTag(CACHE_KEYS.HEADER, locale)
+    console.log(`Revalidating tag: ${headerTag}`)
+    revalidateTag(headerTag, 'max')
   } else {
     console.log(`Revalidating path: ${urlWithLocale}`)
-    await revalidatePath(urlWithLocale)
+    revalidatePath(urlWithLocale)
   }
 }
 

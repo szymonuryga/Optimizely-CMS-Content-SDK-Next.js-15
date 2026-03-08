@@ -56,7 +56,7 @@ export default function Footer({
             <OptimizelyComponent key={index} content={item} />
           ))}
         </div>
-        <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
+        <div className="text-muted-foreground mt-8 border-t pt-8 text-center text-sm">
           {copyrightText}
         </div>
       </div>

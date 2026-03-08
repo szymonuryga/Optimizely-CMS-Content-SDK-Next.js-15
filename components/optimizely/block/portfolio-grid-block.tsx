@@ -29,7 +29,9 @@ type Props = {
   content: ContentProps<typeof PortfolioGridBlockContentType>
 }
 
-export default function PortfolioGridBlock({ content: { title, items } }: Props) {
+export default function PortfolioGridBlock({
+  content: { title, items },
+}: Props) {
   return (
     <section className="container mx-auto px-4 py-16">
       <h2 className="mb-12 text-3xl font-bold" data-epi-edit="title">
