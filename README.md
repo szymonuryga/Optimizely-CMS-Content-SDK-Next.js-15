@@ -89,8 +89,8 @@ optimizely.config.mjs   # Optimizely CLI config (points to component files)
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/szymonuryga/Optimizely-CMS-Content-SDK-Next.js-15.git
-cd Optimizely-CMS-Content-SDK-Next.js-15
+git clone https://github.com/szymonuryga/Optimizely-CMS-Content-SDK-Next.js-16.git
+cd Optimizely-CMS-Content-SDK-Next.js-16
 ```
 
 ### 2. Install dependencies
