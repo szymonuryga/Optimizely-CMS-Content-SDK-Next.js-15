@@ -16,7 +16,7 @@ export const FooterContentType = contentType({
     columns: {
       type: 'array',
       displayName: 'Columns',
-      localized: true,
+      isLocalized: true,
       sortOrder: 20,
       items: {
         type: 'content',
@@ -25,7 +25,7 @@ export const FooterContentType = contentType({
     },
     socialLinks: {
       type: 'array',
-      localized: true,
+      isLocalized: true,
       displayName: 'Social Links',
       sortOrder: 30,
       items: {

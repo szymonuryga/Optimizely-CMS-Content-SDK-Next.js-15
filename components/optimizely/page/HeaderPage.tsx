@@ -19,7 +19,7 @@ export const HeaderContentType = contentType({
     navItems: {
       type: 'array',
       displayName: 'Nav Items',
-      localized: true,
+      isLocalized: true,
       sortOrder: 10,
       items: {
         type: 'content',
@@ -29,7 +29,7 @@ export const HeaderContentType = contentType({
     ctaText: {
       type: 'string',
       displayName: 'CTA Text',
-      localized: true,
+      isLocalized: true,
       sortOrder: 20,
     },
     ctaHref: {

@@ -16,19 +16,19 @@ export const ProfileBlockContentType = contentType({
     name: {
       type: 'string',
       displayName: 'Name',
-      localized: true,
+      isLocalized: true,
       sortOrder: 0,
     },
     title: {
       type: 'string',
       displayName: 'Title',
-      localized: true,
+      isLocalized: true,
       sortOrder: 10,
     },
     bio: {
       type: 'string',
       displayName: 'Bio',
-      localized: true,
+      isLocalized: true,
       sortOrder: 20,
     },
   },

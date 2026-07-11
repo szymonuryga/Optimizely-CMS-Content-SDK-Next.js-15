@@ -9,7 +9,7 @@ export const AvailabilityBlockContentType = contentType({
     availability: {
       type: 'string',
       displayName: 'Availability',
-      localized: true,
+      isLocalized: true,
     },
     projectTypes: {
       type: 'array',
@@ -17,7 +17,7 @@ export const AvailabilityBlockContentType = contentType({
         type: 'string',
       },
       displayName: 'Project Types',
-      localized: true,
+      isLocalized: true,
       sortOrder: 10,
     },
   },

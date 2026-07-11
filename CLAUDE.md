@@ -91,7 +91,7 @@ export const HeroBlockContentType = contentType({
   baseType: '_component',   // '_component' | '_page' | '_experience' | '_section'
   properties: {
     title: { type: 'string', displayName: 'Title', localized: true },
-    showDecoration: { type: 'boolean', defaultValue: true },
+    showDecoration: { type: 'boolean' },
   },
 })
 

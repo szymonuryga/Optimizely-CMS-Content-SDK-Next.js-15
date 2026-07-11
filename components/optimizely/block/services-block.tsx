@@ -15,7 +15,7 @@ export const ServicesBlockContentType = contentType({
         allowedTypes: [ServiceItemContentType],
       },
       displayName: 'Services',
-      localized: true,
+      isLocalized: true,
       sortOrder: 10,
     },
   },

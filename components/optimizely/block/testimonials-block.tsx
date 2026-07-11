@@ -9,7 +9,7 @@ export const TestimonialsBlockContentType = contentType({
   properties: {
     title: {
       type: 'string',
-      localized: true,
+      isLocalized: true,
       displayName: 'Title',
       sortOrder: 0,
     },
@@ -20,7 +20,7 @@ export const TestimonialsBlockContentType = contentType({
         allowedTypes: [TestimonialItemBlockContentType],
       },
       displayName: 'Testimonials',
-      localized: true,
+      isLocalized: true,
       sortOrder: 10,
     },
   },

@@ -13,7 +13,7 @@ export const NavItemContentType = contentType({
     label: {
       type: 'string',
       displayName: 'Label',
-      localized: true,
+      isLocalized: true,
     },
   },
 })

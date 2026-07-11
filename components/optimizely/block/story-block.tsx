@@ -8,7 +8,7 @@ export const StoryBlockContentType = contentType({
   properties: {
     story: {
       type: 'string',
-      localized: true,
+      isLocalized: true,
       displayName: 'Story',
       sortOrder: 10,
     },

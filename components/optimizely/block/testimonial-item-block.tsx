@@ -18,13 +18,13 @@ export const TestimonialItemBlockContentType = contentType({
   properties: {
     fullName: {
       type: 'string',
-      localized: true,
+      isLocalized: true,
       displayName: 'Full Name',
       sortOrder: 10,
     },
     position: {
       type: 'string',
-      localized: true,
+      isLocalized: true,
       displayName: 'Position',
       sortOrder: 20,
     },
@@ -35,7 +35,7 @@ export const TestimonialItemBlockContentType = contentType({
     },
     content: {
       type: 'string',
-      localized: true,
+      isLocalized: true,
       displayName: 'Content',
       sortOrder: 30,
     },

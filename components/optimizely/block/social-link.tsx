@@ -32,7 +32,6 @@ export const SocialLinkContentType = contentType({
           value: 'github',
         },
       ],
-      group: 'Information',
       displayName: 'Platform',
     },
   },

@@ -18,7 +18,7 @@ export const PortfolioGridBlockContentType = contentType({
         allowedTypes: [PortfolioItemBlockContentType],
       },
       displayName: 'Items',
-      localized: true,
+      isLocalized: true,
       sortOrder: 10,
     },
   },

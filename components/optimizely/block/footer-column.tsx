@@ -10,7 +10,7 @@ export const FooterColumnContentType = contentType({
     title: {
       type: 'string',
       displayName: 'Title',
-      localized: true,
+      isLocalized: true,
     },
     links: {
       type: 'array',

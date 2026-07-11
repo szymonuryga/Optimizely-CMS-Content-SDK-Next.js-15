@@ -16,13 +16,13 @@ export const ServiceItemContentType = contentType({
     title: {
       type: 'string',
       displayName: 'Title',
-      localized: true,
+      isLocalized: true,
       sortOrder: 0,
     },
     description: {
       type: 'string',
       displayName: 'Description',
-      localized: true,
+      isLocalized: true,
       sortOrder: 10,
     },
   },

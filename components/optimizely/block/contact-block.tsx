@@ -17,12 +17,12 @@ export const ContactBlockContentType = contentType({
     title: {
       type: 'string',
       displayName: 'Title',
-      localized: true,
+      isLocalized: true,
     },
     description: {
       type: 'string',
       displayName: 'Description',
-      localized: true,
+      isLocalized: true,
       sortOrder: 10,
     },
   },

@@ -168,9 +168,9 @@ export const HeroBlockContentType = contentType({
   displayName: 'Hero Block',
   baseType: '_component',
   properties: {
-    title: { type: 'string', displayName: 'Title', localized: true },
-    subtitle: { type: 'string', displayName: 'Subtitle', localized: true },
-    showDecoration: { type: 'boolean', defaultValue: true },
+    title: { type: 'string', displayName: 'Title', isLocalized: true },
+    subtitle: { type: 'string', displayName: 'Subtitle', isLocalized: true },
+    showDecoration: { type: 'boolean', },
   },
 })
 ```

@@ -13,19 +13,19 @@ export const SEOExperienceContentType = contentType({
     title: {
       type: 'string',
       displayName: 'Title',
-      localized: true,
+      isLocalized: true,
       sortOrder: 10,
     },
     shortDescription: {
       type: 'string',
       displayName: 'Short Description',
-      localized: true,
+      isLocalized: true,
       sortOrder: 20,
     },
     keywords: {
       type: 'string',
       displayName: 'Keywords',
-      localized: true,
+      isLocalized: true,
       sortOrder: 30,
     },
   },
