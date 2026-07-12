@@ -1,11 +1,9 @@
-import { GraphClient } from '@optimizely/cms-sdk'
+import { getClient } from '@optimizely/cms-sdk'
 import { mapPathWithoutLocale } from './language'
 
 export const getAllPagesPaths = async () => {
   try {
-    const client = new GraphClient(process.env.OPTIMIZELY_GRAPH_SINGLE_KEY!, {
-      graphUrl: process.env.OPTIMIZELY_GRAPH_URL,
-    })
+    const client = getClient()
 
     const pageTypes = ['CMSPage', 'SEOExperience']
     const pathsResp = await client.request(ALL_PAGES_QUERY, {

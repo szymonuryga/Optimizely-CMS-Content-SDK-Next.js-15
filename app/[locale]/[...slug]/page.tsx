@@ -1,7 +1,10 @@
 import { generateAlternates } from '@/lib/metadata'
 import { getAllPagesPaths } from '@/lib/optimizely/all-pages'
-import { GraphClient } from '@optimizely/cms-sdk'
-import { OptimizelyComponent } from '@optimizely/cms-sdk/react/server'
+import { getClient } from '@optimizely/cms-sdk'
+import {
+  OptimizelyComponent,
+  withAppContext,
+} from '@optimizely/cms-sdk/react/server'
 import { Metadata } from 'next'
 import { cacheLife } from 'next/cache'
 import { notFound } from 'next/navigation'
@@ -10,9 +13,7 @@ async function getPageContent(locale: string, slug: string[]) {
   'use cache'
   cacheLife('max')
 
-  const client = new GraphClient(process.env.OPTIMIZELY_GRAPH_SINGLE_KEY!, {
-    graphUrl: process.env.OPTIMIZELY_GRAPH_URL,
-  })
+  const client = getClient()
 
   return client.getContentByPath(`/${locale}/${slug.join('/')}/`)
 }
@@ -49,7 +50,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 }
 
-export default async function Page({ params }: Props) {
+async function Page({ params }: Props) {
   const { slug, locale } = await params
 
   try {
@@ -61,3 +62,5 @@ export default async function Page({ params }: Props) {
     return notFound()
   }
 }
+
+export default withAppContext(Page)

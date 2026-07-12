@@ -1,6 +1,7 @@
 import { initReactComponentRegistry } from '@optimizely/cms-sdk/react/server'
 import {
   BlankExperienceContentType,
+  config,
   initContentTypeRegistry,
   initDisplayTemplateRegistry,
 } from '@optimizely/cms-sdk'
@@ -72,6 +73,11 @@ import StartPage, {
 } from '@/components/optimizely/page/StartPage'
 import BlankExperience from '@/components/optimizely/experience/BlankExperience'
 import BlankSection from '@/components/optimizely/section/BlankSection'
+
+config({
+  apiKey: process.env.OPTIMIZELY_GRAPH_SINGLE_KEY!,
+  graphUrl: process.env.OPTIMIZELY_GRAPH_URL,
+})
 
 initContentTypeRegistry([
   // Block content types

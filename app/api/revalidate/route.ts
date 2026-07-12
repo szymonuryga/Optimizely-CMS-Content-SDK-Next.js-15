@@ -1,7 +1,8 @@
-import { GraphClient } from '@optimizely/cms-sdk'
+import { getClient } from '@optimizely/cms-sdk'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
 import { CACHE_KEYS, getCacheTag } from '@/lib/cache/cache-keys'
+import '@/lib/optimizely/init'
 
 const OPTIMIZELY_REVALIDATE_SECRET = process.env.OPTIMIZELY_REVALIDATE_SECRET
 
@@ -17,9 +18,7 @@ export async function POST(request: NextRequest) {
     const [guid, locale] = docId.split('_')
     const formattedGuid = guid.replaceAll('-', '')
 
-    const client = new GraphClient(process.env.OPTIMIZELY_GRAPH_SINGLE_KEY!, {
-      graphUrl: process.env.OPTIMIZELY_GRAPH_URL,
-    })
+    const client = getClient()
 
     const contentData = await client.request(GET_CONTENT_BY_GUID_QUERY, {
       guid: formattedGuid,
