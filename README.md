@@ -210,18 +210,16 @@ export default function CMSPage({ content }) {
 
 ### Fetching content
 
-The SDK provides a `GraphClient` with built-in methods and React 19 cache support:
+The Graph client is configured once — via `config({ apiKey, graphUrl })` in [`lib/optimizely/init.ts`](lib/optimizely/init.ts) — then retrieved anywhere with `getClient()`, with built-in methods and React 19 cache support:
 
 ```typescript
-import { GraphClient } from '@optimizely/cms-sdk'
+import { getClient } from '@optimizely/cms-sdk'
 
 async function getPageContent(locale: string, slug: string[]) {
   'use cache'
   cacheLife('max')
 
-  const client = new GraphClient(process.env.OPTIMIZELY_GRAPH_SINGLE_KEY!, {
-    graphUrl: process.env.OPTIMIZELY_GRAPH_URL,
-  })
+  const client = getClient()
 
   return client.getContentByPath(`/${locale}/${slug.join('/')}/`)
 }
@@ -283,11 +281,44 @@ The middleware ([`proxy.ts`](proxy.ts)) handles locale detection with the follow
 
 ## Preview Mode
 
-The `/preview` route renders unpublished content from Optimizely CMS. It injects the Optimizely communication script that enables in-context editing:
+The `/preview` route renders unpublished content from Optimizely CMS. It injects the Optimizely communication script that enables in-context editing, and uses `NextPreviewComponent` for router-integrated refresh on save:
 
 ```typescript
 <Script src={`${process.env.OPTIMIZELY_CMS_HOST}/util/javascript/communicationinjector.js`} />
+<NextPreviewComponent />
 <OptimizelyComponent content={response} />
+```
+
+---
+
+## AI-Assisted Development with Agent Skills
+
+This starter ships with the official Optimizely CMS **Agent Skills**, vendored into [`.claude/skills/`](.claude/skills/). [Agent Skills](https://agentskills.io) are a standardized, open format for packaging domain expertise into a folder an AI coding agent can load *on demand*: every skill's `name` and `description` sit in the agent's context at all times (a few hundred tokens), but the full instructions only load once a task actually matches — so keeping several installed costs next to nothing until they're used. The format is supported by [40+ agentic tools](https://agentskills.io/clients), including Claude Code, Cursor, GitHub Copilot, and VS Code — not just Claude.
+
+### Bundled skills
+
+| Skill                                                                    | Use it to...                                                           | Example prompt                                          |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------- |
+| [`optimizely-setup`](.claude/skills/optimizely-setup/SKILL.md)           | Bootstrap the SDK/CLI in a project from scratch                        | "Set up Optimizely SDK in this project"                 |
+| [`optimizely-model`](.claude/skills/optimizely-model/SKILL.md)           | Define content types, display templates, and contracts in code         | "Create a BlogPage content type with title and body"    |
+| [`optimizely-model-react`](.claude/skills/optimizely-model-react/SKILL.md) | Generate the React component for a content type or display template | "Create the React component for BlogPage"                |
+| [`optimizely-preview`](.claude/skills/optimizely-preview/SKILL.md)       | Set up, configure, or debug live preview / click-to-edit               | "Set up live preview for Next.js App Router"             |
+
+Each skill folder also has a `references/` subfolder with deeper material (property types, base types, common pitfalls, troubleshooting) that the agent reads only when a task actually needs that level of detail, keeping everyday prompts cheap.
+
+### Using them
+
+Nothing to configure — an Agent Skills-compatible tool (Claude Code, Cursor, etc.) picks up everything in `.claude/skills/` automatically for this repo. Just describe what you want (see the example prompts above) and the matching skill activates; combine them for larger tasks, e.g. `optimizely-model` → `optimizely-model-react` → `optimizely-preview` to go from "model a new block" to "it's editable in live preview."
+
+### Keeping them up to date
+
+These skills are mirrored from the SDK's own repository and aren't maintained here. To refresh a skill, pull the latest version of its folder from [`episerver/content-js-sdk`](https://github.com/episerver/content-js-sdk/tree/main/plugins/optimizely-cms-skills/skills) (`plugins/optimizely-cms-skills/skills/<skill-name>`) and replace the matching folder under `.claude/skills/`.
+
+If you'd rather not vendor the files, Claude Code can install and auto-update them as a plugin instead:
+
+```
+/plugin marketplace add episerver/content-js-sdk
+/plugin install optimizely-cms-skills@episerver-content-js-sdk
 ```
 
 ---
@@ -326,8 +357,8 @@ The `/preview` route renders unpublished content from Optimizely CMS. It injects
 | --------------------- | ------- |
 | Next.js               | 16      |
 | React                 | 19      |
-| `@optimizely/cms-sdk` | ^1.0.0  |
-| `@optimizely/cms-cli` | ^1.0.0  |
+| `@optimizely/cms-sdk` | ^2.1.0  |
+| `@optimizely/cms-cli` | ^2.1.0  |
 | Tailwind CSS          | ^4      |
 | TypeScript            | ^5      |
 | shadcn/ui             | —       |

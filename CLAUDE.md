@@ -13,6 +13,8 @@ A **starter template and course repository** demonstrating how to build a Next.j
 
 The goal is to show the complete integration pattern: define types in code → push to CMS via CLI → fetch and render content with the SDK.
 
+**Agent Skills are installed** in `.claude/skills/` (`optimizely-setup`, `optimizely-model`, `optimizely-model-react`, `optimizely-preview`, vendored from `episerver/content-js-sdk`). They activate automatically when a task matches — e.g. modeling a content type or wiring up preview — and carry deeper reference material than this file does for those specific workflows. See the README's "AI-Assisted Development with Agent Skills" section for details.
+
 ---
 
 ## Tech Stack
@@ -21,57 +23,11 @@ The goal is to show the complete integration pattern: define types in code → p
 | --------------------- | ----------- | ---------------------- |
 | Next.js               | 16          | Framework (App Router) |
 | React                 | 19          | UI runtime             |
-| `@optimizely/cms-sdk` | ^1.0.0      | CMS integration        |
-| `@optimizely/cms-cli` | ^1.0.0      | Content type push CLI  |
+| `@optimizely/cms-sdk` | ^2.1.0      | CMS integration        |
+| `@optimizely/cms-cli` | ^2.1.0      | Content type push CLI  |
 | Tailwind CSS          | ^4          | Styling                |
 | TypeScript            | ^5 (strict) | Type safety            |
 | shadcn/ui + Radix UI  | —           | UI primitives          |
-
----
-
-## Project Structure
-
-```
-app/
-  layout.tsx                  # Root layout — imports globals.css and lib/optimizely/init.ts
-  [locale]/
-    layout.tsx                # Locale layout — HTML shell, Header, Footer, fonts
-    page.tsx                  # Homepage — fetches Start Page content from CMS
-    [...slug]/page.tsx        # Catch-all — handles every other CMS page
-  api/revalidate/route.ts     # POST webhook — triggers cache revalidation on CMS publish
-  preview/
-    layout.tsx                # Minimal layout for preview mode
-    page.tsx                  # Renders unpublished draft content from CMS
-
-components/
-  optimizely/
-    block/                    # Block-level components (15 blocks)
-    page/                     # Page type components (CMSPage, HeaderPage, FooterPage, StartPage)
-    experience/               # Experience types (BlankExperience, SEOExperience)
-    section/                  # Section types (BlankSection)
-  layout/
-    header.tsx                # Async Server Component — fetches header content from CMS
-    footer.tsx                # Async Server Component — fetches footer content from CMS
-    language-switcher.tsx     # 'use client' — interactive locale dropdown
-  ui/                         # shadcn/ui components (button, card, avatar, etc.)
-
-lib/
-  optimizely/
-    init.ts                   # ENTRY POINT — registers all content types and React components
-    all-pages.ts              # getAllPagesPaths() — used by generateStaticParams()
-    content-types.ts          # AllBlocksContentTypes list used in page/block schemas
-    language.ts               # LOCALES, DEFAULT_LOCALE, mapPathWithoutLocale()
-  cache/
-    cache-keys.ts             # CACHE_KEYS constants + getCacheTag(key, locale) helper
-  image/
-    loader.ts                 # Custom Cloudinary image loader for next/image
-  metadata.ts                 # generateAlternates() — hreflang + canonical URLs
-  utils.ts                    # cn(), createUrl(), leadingSlashUrlPath()
-
-proxy.ts                      # Next.js middleware — locale routing and negotiation
-optimizely.config.mjs         # CLI config — points to components/optimizely/**/*.tsx
-next.config.ts                # cacheComponents: true, custom image loader, security headers
-```
 
 ---
 
@@ -90,7 +46,7 @@ export const HeroBlockContentType = contentType({
   displayName: 'Hero Block',
   baseType: '_component',   // '_component' | '_page' | '_experience' | '_section'
   properties: {
-    title: { type: 'string', displayName: 'Title', localized: true },
+    title: { type: 'string', displayName: 'Title', isLocalized: true },
     showDecoration: { type: 'boolean' },
   },
 })
@@ -114,6 +70,10 @@ export default function HeroBlock({ content: { title, showDecoration } }: Props)
 - `_section` — Visual Builder section (rows/columns)
 
 **`data-epi-edit` attributes** enable in-context editing in the CMS preview — always add them to editable fields.
+
+**Property naming (SDK 2.x):** properties use `isLocalized` and `isRequired` (not `localized` / `required` — those were renamed in the 2.0.0 breaking change). `displayName` is mandatory on every content type and property.
+
+**Always constrain `content` / `contentReference` properties** with `allowedTypes` or `restrictedTypes` (see `AllBlocksContentTypes` usage in `CMSPage`/`StartPage`, or single-type lists like `[NavItemContentType]` in `HeaderPage`). Without one of these, the SDK generates nested GraphQL fragments for every possible content type, which causes severe query performance problems. This applies to array items of type `content`/`contentReference` too.
 
 ---
 
@@ -168,13 +128,13 @@ async function getPageContent(locale: string, slug: string[]) {
   'use cache'
   cacheLife('max')
 
-  const client = new GraphClient(process.env.OPTIMIZELY_GRAPH_SINGLE_KEY!, {
-    graphUrl: process.env.OPTIMIZELY_GRAPH_URL,
-  })
+  const client = getClient()
 
   return client.getContentByPath(`/${locale}/${slug.join('/')}/`)
 }
 ```
+
+The Graph client is configured once via `config({ apiKey, graphUrl })` in `lib/optimizely/init.ts` (imported by the root layout). Every fetch site then calls `getClient()` instead of instantiating its own `new GraphClient(...)` — single configuration point, no env vars passed around. `app/api/revalidate/route.ts` imports `lib/optimizely/init` directly, since API routes aren't part of the layout tree and wouldn't otherwise trigger `config()`.
 
 **Critical rule for `'use cache'` functions:** Always handle errors **inside** the `'use cache'` function with a try/catch that returns `null` instead of throwing. If a `'use cache'` function throws, the error is re-thrown by the cache runtime in an async context outside the component's render — causing `HANGING_PROMISE_REJECTION` during static prerendering. The component-level try/catch cannot catch it.
 
@@ -186,7 +146,7 @@ async function getHeaderContent(locale: string) {
   cacheTag(getCacheTag(CACHE_KEYS.HEADER, locale))
 
   try {
-    const client = new GraphClient(...)
+    const client = getClient()
     const content = await client.getContentByPath(`/${locale}/header/`)
     return content[0] ?? null
   } catch {
@@ -321,9 +281,21 @@ Renders unpublished draft content. Receives CMS preview parameters via search pa
 
 ```typescript
 // app/preview/page.tsx
-<Script src={`${process.env.OPTIMIZELY_CMS_HOST}/util/javascript/communicationinjector.js`} />
-<OptimizelyComponent content={response} />
+import { NextPreviewComponent } from '@optimizely/cms-sdk/react/nextjs'
+import { withAppContext } from '@optimizely/cms-sdk/react/server'
+
+async function Page({ searchParams }: Props) {
+  <Script src={`${process.env.OPTIMIZELY_CMS_HOST}/util/javascript/communicationinjector.js`} />
+  <NextPreviewComponent />
+  <OptimizelyComponent content={response} />
+}
+
+export default withAppContext(Page)
 ```
+
+`NextPreviewComponent` (from `@optimizely/cms-sdk/react/nextjs`, added in SDK 2.1) is the Next.js–optimized preview component — it triggers `router.refresh()` for same-URL edits instead of a full reload. Use this instead of the generic `PreviewComponent` from `@optimizely/cms-sdk/react/client`.
+
+The page function is wrapped with `withAppContext` (all three renderable routes are: homepage, `[...slug]`, preview) — this initializes request-scoped context storage. `client.getPreviewContent()` auto-populates it with preview data (`preview_token`, `locale`, `key`, `version`, `mode`), readable anywhere in the tree via `getContext()`/`getContextData()` from `@optimizely/cms-sdk/react/server`.
 
 Preview route is excluded from middleware locale routing (`shouldExclude` checks for `/preview`).
 
@@ -355,7 +327,7 @@ Preview route is excluded from middleware locale routing (`shouldExclude` checks
      displayName: 'My Block',
      baseType: '_component',
      properties: {
-       heading: { type: 'string', localized: true },
+       heading: { type: 'string', isLocalized: true },
      },
    })
 
@@ -411,3 +383,7 @@ export const LOCALES = ['en', 'pl', 'sv']
 - **`OPTIMIZELY_START_PAGE_URL`** — Optimizely does not assign `/` as the URL of the Start Page when using hierarchical routing. The Start Page gets a real path like `/start-page`. This env var is used to strip that prefix when resolving URLs in the webhook, making the routes appear at the root.
 
 - **Display templates** — used for component variants (e.g. `ProfileBlock` has a display template for a different visual style). Register via `initDisplayTemplateRegistry`.
+
+- **Always use `getClient()`, never `new GraphClient()`** — the Graph client is configured once via `config({ apiKey, graphUrl })` in `lib/optimizely/init.ts`. Every fetch site (pages, `header.tsx`, `footer.tsx`, `all-pages.ts`, the revalidate webhook) calls `getClient()` to get the shared, pre-configured instance. `getClient()` throws if `config()` hasn't run first — this is guaranteed for anything rendered under the root layout (`app/layout.tsx` imports `lib/optimizely/init`), but **API routes are not part of the layout tree**, so `app/api/revalidate/route.ts` imports `lib/optimizely/init` directly to trigger `config()`. Any new API route that talks to Graph needs the same explicit import.
+
+- **`withAppContext`** — all three renderable routes (`app/[locale]/page.tsx`, `app/[locale]/[...slug]/page.tsx`, `app/preview/page.tsx`) export their page component wrapped as `export default withAppContext(Page)` (note: the function itself is *not* the default export — `Page` is defined separately, then wrapped). This initializes request-scoped context storage required by the SDK's `getContext()`/`setContext()`/`getContextData()` system. `generateMetadata`/`generateStaticParams` stay as regular named exports and are not wrapped.
